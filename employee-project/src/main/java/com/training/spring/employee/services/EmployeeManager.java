@@ -25,4 +25,8 @@ public class EmployeeManager {
         }
     }
 
+    public Employee getOneEmployeeByUsername(final String usernameParam) {
+        return this.es.getEmployee(usernameParam);
+    }
+
 }
