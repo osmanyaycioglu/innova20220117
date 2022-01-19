@@ -1,0 +1,64 @@
+app:
+  language: tr
+  store:
+    customer-list:
+    - height: 200
+      name: osman
+      surname: yay
+      weight: 95
+    - height: 180
+      name: ali
+      surname: veli
+      weight: 110
+    customer-map:
+      osmanyay:
+        height: 190
+        name: osman
+        surname: ulak
+        weight: 98
+    desc: training
+    language: tr
+    location: istanbul
+    sub-properties:
+      prop1: test1
+      prop2: test2
+    version: 1.0.0
+management:
+  endpoint:
+    health:
+      show-components: always
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+server:
+  error:
+    include-binding-errors: always
+    include-exception: true
+    include-message: always
+    include-stacktrace: always
+  http2:
+    enabled: false
+  port: 9090
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    password: 123456
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+  jpa:
+    show-sql: true
+    database: POSTGRESQL
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL94Dialect
+        format_sql: true
+        show_sql: true
+  profiles:
+    active: all-three
+test:
+  conditional:
+    hello: eng

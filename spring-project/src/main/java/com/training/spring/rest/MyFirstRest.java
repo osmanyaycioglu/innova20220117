@@ -4,6 +4,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotEmpty;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.training.spring.Customer;
+import com.training.spring.data.ICustomerDao;
 
 @RestController
 @RequestMapping("/first/rest")
@@ -45,8 +47,14 @@ public class MyFirstRest {
         return "Hello world 4 " + customer;
     }
 
+    @Autowired
+    private ICustomerDao custDao;
+
     @PostMapping("/hello5")
     public CustomerResult hello5(@Validated @RequestBody final Customer customer) {
+        customer.getPhone()
+                .setCustomer(customer);
+
         if (customer.getName()
                     .startsWith("xyz")) {
             throw new IllegalArgumentException("xyz ile başlayamaz");
@@ -55,6 +63,7 @@ public class MyFirstRest {
         resultLoc.setCustomer(customer);
         resultLoc.setDescription("My description");
         resultLoc.setTest(1002);
+        this.custDao.save(customer);
         return resultLoc;
     }
 

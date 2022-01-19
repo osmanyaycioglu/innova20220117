@@ -1,14 +1,28 @@
 package com.training.spring;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.training.spring.validation.StartWith;
 
+@Entity
+//@Table(name = "musteri")
 public class Customer {
+
+    @Id
+    @GeneratedValue
+    @JsonIgnore
+    private Long    customerId;
 
     @NotEmpty
     @Size(min = 2, max = 20, message = "name 2 ile 20 arasında olmalı")
@@ -25,6 +39,11 @@ public class Customer {
     @Max(250)
     @Min(10)
     private Integer weight;
+
+    // @Fetch(FetchMode.SELECT)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "customer")
+    private Phone phone;
+
 
     public String getName() {
         return this.name;
@@ -69,6 +88,22 @@ public class Customer {
                + ", weight="
                + this.weight
                + "]";
+    }
+
+    public Long getCustomerId() {
+        return this.customerId;
+    }
+
+    public void setCustomerId(final Long customerIdParam) {
+        this.customerId = customerIdParam;
+    }
+
+    public Phone getPhone() {
+        return this.phone;
+    }
+
+    public void setPhone(final Phone phoneParam) {
+        this.phone = phoneParam;
     }
 
 
