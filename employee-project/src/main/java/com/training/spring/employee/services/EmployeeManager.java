@@ -1,5 +1,7 @@
 package com.training.spring.employee.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +29,14 @@ public class EmployeeManager {
 
     public Employee getOneEmployeeByUsername(final String usernameParam) {
         return this.es.getEmployee(usernameParam);
+    }
+
+    public void add(final Employee employeeParam) {
+        this.es.add(employeeParam);
+    }
+
+    public List<Employee> getAll() {
+        return this.es.getAll();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.training.spring.employee.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -20,13 +22,28 @@ public class EmployeeStorage {
         Map<String, Employee> employeesLoc = appPropertiesParam.getEmployees();
         Set<Entry<String, Employee>> entrySetLoc = employeesLoc.entrySet();
         for (Entry<String, Employee> entryLoc : entrySetLoc) {
-            this.employeeMap.put(entryLoc.getKey(),
-                                 entryLoc.getValue());
+            this.getEmployeeMap()
+                .put(entryLoc.getKey(),
+                     entryLoc.getValue());
         }
     }
 
     public Employee getEmployee(final String username) {
-        return this.employeeMap.get(username);
+        return this.getEmployeeMap()
+                   .get(username);
+    }
+
+    public Map<String, Employee> getEmployeeMap() {
+        return this.employeeMap;
+    }
+
+    public void add(final Employee employeeParam) {
+        this.employeeMap.put(employeeParam.getUsername(),
+                             employeeParam);
+    }
+
+    public List<Employee> getAll() {
+        return new ArrayList<>(this.employeeMap.values());
     }
 
 }
