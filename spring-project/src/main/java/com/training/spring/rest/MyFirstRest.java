@@ -1,5 +1,11 @@
 package com.training.spring.rest;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotEmpty;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +19,7 @@ import com.training.spring.Customer;
 
 @RestController
 @RequestMapping("/first/rest")
+@Validated
 public class MyFirstRest {
 
     @GetMapping("/hello2/{abc}/user/{xyz}")
@@ -22,8 +29,8 @@ public class MyFirstRest {
     }
 
     @GetMapping("/hello3")
-    public String hello3(@RequestParam("abc") final String name,
-                         @RequestParam("xyz") final Integer age) {
+    public String hello3(@NotEmpty @RequestParam("abc") final String name,
+                         @Max(150) @RequestParam("xyz") final Integer age) {
         return "Hello world 3 " + name + " " + age;
     }
 
@@ -39,7 +46,11 @@ public class MyFirstRest {
     }
 
     @PostMapping("/hello5")
-    public CustomerResult hello5(@RequestBody final Customer customer) {
+    public CustomerResult hello5(@Validated @RequestBody final Customer customer) {
+        if (customer.getName()
+                    .startsWith("xyz")) {
+            throw new IllegalArgumentException("xyz ile başlayamaz");
+        }
         CustomerResult resultLoc = new CustomerResult();
         resultLoc.setCustomer(customer);
         resultLoc.setDescription("My description");
@@ -47,6 +58,45 @@ public class MyFirstRest {
         return resultLoc;
     }
 
+    @PostMapping("/hello6")
+    public ResponseEntity<CustomerResult> hello6(@Validated @RequestBody final Customer customer,
+                                                 final HttpServletRequest hsr) {
+        String parameterLoc = hsr.getParameter("name");
+        System.out.println("Name : " + parameterLoc);
+        CustomerResult resultLoc = new CustomerResult();
+        resultLoc.setCustomer(customer);
+        resultLoc.setDescription("My description");
+        resultLoc.setTest(1002);
+        return ResponseEntity.status(201)
+                             .header("x-test",
+                                     "my header test")
+                             .body(resultLoc);
+    }
+
+    @PostMapping("/hello7/{operation}")
+    public ResponseEntity<?> hello7(@PathVariable("operation") final String op,
+                                    final HttpServletRequest hsr) {
+        switch (op) {
+            case "add":
+                String parameterLoc = hsr.getParameter("name");
+                System.out.println("Name : " + parameterLoc);
+                CustomerResult resultLoc = new CustomerResult();
+                resultLoc.setCustomer(null);
+                resultLoc.setDescription("My description");
+                resultLoc.setTest(1002);
+                return ResponseEntity.status(201)
+                                     .header("x-test",
+                                             "my header test")
+                                     .body(resultLoc);
+
+
+            default:
+                return ResponseEntity.status(202)
+                                     .header("x-test",
+                                             "my header test")
+                                     .body("boş");
+        }
+    }
 
     @GetMapping("/hello")
     public String hello() {

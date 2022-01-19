@@ -1,12 +1,24 @@
 package com.training.spring.employee.rest.models;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 public class EmployeeRest {
 
-    private String username;
-    private String name;
-    private String surname;
-    private int    amount;
+    @NotEmpty
+    @Size(min = 6, max = 12)
+    private String  username;
+    @NotEmpty
+    @Size(min = 2, max = 15)
+    private String  name;
+    @NotEmpty
+    @Size(min = 3, max = 20)
+    private String  surname;
+    @Positive
+    @NotNull
+    private Integer amount;
 
     public String getUsername() {
         return this.username;
@@ -32,14 +44,6 @@ public class EmployeeRest {
         this.surname = surnameParam;
     }
 
-    public int getAmount() {
-        return this.amount;
-    }
-
-    public void setAmount(final int amountParam) {
-        this.amount = amountParam;
-    }
-
     @Override
     public String toString() {
         return "Employee [username="
@@ -49,8 +53,16 @@ public class EmployeeRest {
                + ", surname="
                + this.surname
                + ", amount="
-               + this.amount
+               + this.getAmount()
                + "]";
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amountParam) {
+        amount = amountParam;
     }
 
 }

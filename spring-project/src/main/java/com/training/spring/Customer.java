@@ -1,11 +1,29 @@
 package com.training.spring;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import com.training.spring.validation.StartWith;
 
 public class Customer {
 
+    @NotEmpty
+    @Size(min = 2, max = 20, message = "name 2 ile 20 arasında olmalı")
     private String  name;
+    @NotEmpty
+    @Size(min = 3, max = 25)
+    @StartWith("soy:")
     private String  surname;
+    @NotNull
+    @Max(300)
+    @Min(50)
     private Integer height;
+    @NotNull
+    @Max(250)
+    @Min(10)
     private Integer weight;
 
     public String getName() {

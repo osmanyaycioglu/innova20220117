@@ -1,11 +1,21 @@
 package com.training.spring.employee.models;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 public class Employee {
 
+    @NotEmpty
+    @Size(min = 6, max = 12)
     private String username;
+    @NotEmpty
+    @Size(min = 2, max = 15)
     private String name;
+    @NotEmpty
+    @Size(min = 3, max = 20)
     private String surname;
+    @Positive
     private int    amount;
 
     public String getUsername() {
